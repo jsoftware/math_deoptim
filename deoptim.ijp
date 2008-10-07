@@ -1,0 +1,46 @@
+NB. project file: c:/users/rsherloc/documents/j602-user/jsrc/addons/math/deoptim/deoptim
+
+coclass 'jproject'
+
+PRIMARYFILES=: 0 : 0
+~Addons/math/deoptim/init
+~Addons/math/deoptim/de
+~Addons/math/deoptim/mutate
+~Addons/math/deoptim/zfns
+~user/usercontrib/multi_arg_verbs
+)
+
+PRIMARYLIBS=: 'pack'
+
+DEVFILES=: ''
+
+DEVLIBS=: ''
+
+OTHERFILES=: 0 : 0
+~Addons/math/deoptim/eg_deoptim.ijs
+~Addons/math/deoptim/history.txt
+~Addons/math/deoptim/manifest.ijs
+~Addons/math/deoptim/test_deoptim.ijs
+)
+
+TARGETFILE=: '~Addons/math/deoptim/deoptim.ijs'
+
+TARGETLOCALE=: 'pdeoptim'
+
+TARGETHEADER=: ''
+
+TARGETEXTRA=: ''
+
+BUILDOPTS=: 0 1 0 0 0 0 0
+
+PREBUILDFILE=: ''
+
+POSTBUILDFILE=: ''
+
+TESTFILE=: '~Addons/math/deoptim/test_proj.ijs'
+
+NOTES=: ''
+
+VERSION=: ''
+
+WINDOWS=: ''
