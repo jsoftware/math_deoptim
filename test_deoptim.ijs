@@ -49,7 +49,6 @@ Note 'commands to try'
 
 NB. =========================================================
 NB. Actual tests
-NB.! add test for intial population
 NB.! add test/example for constraints function
 
 test=: 3 : 0
@@ -62,9 +61,12 @@ test=: 3 : 0
   tmp=. (makeTable 'strategy';2;'refresh';0) getDEoptim evalfunc;bounds
   tmp=. (makeTable 'strategy';3;'refresh';0) getDEoptim evalfunc;bounds
   tmp=. (makeTable 'strategy';4;'refresh';0) getDEoptim evalfunc;bounds
-  tmp=. (('refresh';0),('strategy';2),:'genmax';200) getDEoptim evalfunc;bounds
+  cntrl=. ('refresh';0),('strategy';2),:'genmax';200
+  tmp=. cntrl getDEoptim evalfunc;bounds
   assert. 101<#'BestValbyGen' pget tmp
   assert. +./0 200 = >{:"1 'BestVal Generations' psel tmp
+  cntrl=. (('popln';'Popln' pget tmp),:'refresh';50) pset cntrl
+  tmp2=. cntrl getDEoptim evalfunc;bounds NB. give starting popln
 
   evalfunc=. 'ChebchevPoly_',(>coname''),'_'
   bounds=. |:9 2$_1000 1000

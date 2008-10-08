@@ -10,7 +10,7 @@ PRIMARYFILES=: 0 : 0
 ~user/usercontrib/multi_arg_verbs
 )
 
-PRIMARYLIBS=: 'pack'
+PRIMARYLIBS=: ''
 
 DEVFILES=: ''
 

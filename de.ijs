@@ -54,7 +54,7 @@ deoptim=: 3 : 0
   '' deoptim y
 :
   defs=. 0;100;10;0.8;0.9;'';3;50;4
-  'vtr genmax npop f cr popln strategy refresh digits'=. x,(#x)}.defs
+  'vtr genmax npop f cr pop strategy refresh digits'=. x,(#x)}.defs
   'func bounds constr'=. 3{. boxopen y
   nvar=. {:$bounds  NB. number of variables (loci)
 
@@ -69,9 +69,9 @@ deoptim=: 3 : 0
   refresh=. <.refresh  NB. ensure integer
 
   NB. Initialize population
-  if. #popln do.   NB. initial population provided
-    assert. nvar = {:$ popln NB. popln & bounds have same nCols
-    npop=. #popln
+  if. #pop do.   NB. initial population provided
+    assert. nvar = {:$ pop NB. popln & bounds have same nCols
+    npop=. #pop
   else.            NB. generate initial population
     npop=. npop*nvar
     pop=. (npop,nvar)?@$ 0  NB. uniform random [0,1]
@@ -96,16 +96,16 @@ deoptim=: 3 : 0
     trialpop=. (npop?4$#pop) { pop  NB. 4 samples of size npop without replacement
     trialpop=. strategy mutateTrial f;trialpop;bestvars;pop
     NB. crossover
-    trialpop=.  (pop&*@:-. + trialpop&* ) cr > (npop,nvar)?@$0
-NB.     idx=. I. ,cr > (npop,nvar)?@$0
-NB.     trialpop=.($pop)$(idx{,trialpop) idx},pop
+    NB. trialpop=. (pop&*@:-. + trialpop&* ) cr > (npop,nvar)?@$0  
+    trialpop=.  (cr > (npop,nvar)?@$0)} pop ,: trialpop
 
     if. #constr do. NB. check that vars meet constraints
       while. 0< nbad=. +/isbad=. -.constr~ trialpop do.
         tmp=. (nbad?4$#pop) { pop  NB. sample without replacement
         tmp=. strategy mutateTrial f;tmp;bestvars;isbad#pop
         NB. crossover
-        tmp=.  ((isbad#pop)&*@:-. + tmp&* ) cr > (nbad,nvar)?@$0  
+        NB.tmp=.  ((isbad#pop)&*@:-. + tmp&* ) cr > (nbad,nvar)?@$0  
+        tmp=.  (cr > (nbad,nvar)?@$0)} (isbad#pop) ,: tmp
         trialpop=. tmp (I.isbad)}trialpop  NB. replace "bad" members of trialpop
       end.
     end.
