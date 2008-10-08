@@ -42,8 +42,9 @@ NB.*optimize v Applies DE to parameters given & returns DE result
 optimize=: 3 : 0
   vtr=. 1e_12
   genmax=. 2000
-  args=. (pack 'vtr genmax') pset y
-  cntrl=. 'vtr genmax npop f cr strategy' psel args
+  refresh=. 0
+  args=. (pack 'vtr genmax refresh') pset y
+  cntrl=. 'vtr genmax npop f cr strategy refresh' psel args
   updateFunc ('func' pget args)~
   bounds=. |:((#Tcoeff),2)$(- , ]) 'bounds' pget args
   cntrl getDEoptim ('testfunc_',(>coname''),'_');bounds

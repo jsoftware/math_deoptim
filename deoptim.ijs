@@ -3,6 +3,8 @@ NB. =========================================================
 NB. J implementation of Differential Evolution algorithm
 NB. http://www.icsi.berkeley.edu/~storn/code.html
 
+script_z_ '~system/main/pack.ijs'
+
 coclass 'pdeoptim'
 
 
@@ -139,9 +141,10 @@ NB.     trialpop=.($pop)$(idx{,trialpop) idx},pop
       reportProgress bestvars;bestval;gen;digits
     end.
   end.
+  gen=. <:gen  NB. decrement to last run generation
 
   NB. Return Results.
-  if. (refresh > 0) do.
+  if. (refresh > 0) *. 0 ~: refresh | gen do.
     reportProgress bestvars;bestval;gen;digits
   end.
   bestvars;bestval;nfeval;gen;bestvarsbygen;bestvalbygen;pop

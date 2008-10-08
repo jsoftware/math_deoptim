@@ -32,8 +32,9 @@ NB. ---------------------------------------------------------
 NB. Different Control options
 
   NB.vtr genmax npop f cr popln strategy refresh digits
-Control=: 1e_6;1000;10;0.8;0.9;'';1;100;4
-ControlT=: makeTable 'vtr';1e_6;'genmax';1000;'strategy';3;'refresh';0
+Control=: 1e_6;1000;10;0.8;0.9;'';1;0;4
+ControlT=: makeTable 'vtr';1e_6;'genmax';1000;'strategy';3;'refresh';100
+
 Note 'commands to try'
  cntrl=: 1e_6;1000;10;0.8;0.9;'';1;10;4
  cntrl=: 1e_6;13000;10;0.7;0.5;'';2;10;4
@@ -58,12 +59,12 @@ test=: 3 : 0
   tmp=. Control deoptim evalfunc;bounds
   tmp=. getDEoptim evalfunc;bounds
   tmp=. (,:'strategy';1) getDEoptim evalfunc;bounds
-  tmp=. (,:'strategy';2) getDEoptim evalfunc;bounds
-  tmp=. (,:'strategy';3) getDEoptim evalfunc;bounds
-  tmp=. (,:'strategy';4) getDEoptim evalfunc;bounds
-  tmp=. (('strategy';2),,:'genmax';200) getDEoptim evalfunc;bounds
-  assert. 100<#'BestValbyGen' pget tmp
-  assert. +./0 201 = >{:"1 'BestVal Generations' psel tmp
+  tmp=. (makeTable 'strategy';2;'refresh';0) getDEoptim evalfunc;bounds
+  tmp=. (makeTable 'strategy';3;'refresh';0) getDEoptim evalfunc;bounds
+  tmp=. (makeTable 'strategy';4;'refresh';0) getDEoptim evalfunc;bounds
+  tmp=. (('refresh';0),('strategy';2),:'genmax';200) getDEoptim evalfunc;bounds
+  assert. 101<#'BestValbyGen' pget tmp
+  assert. +./0 200 = >{:"1 'BestVal Generations' psel tmp
 
   evalfunc=. 'ChebchevPoly_',(>coname''),'_'
   bounds=. |:9 2$_1000 1000
