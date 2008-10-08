@@ -3,8 +3,7 @@ NB. GUI for DE example
 NB. http://www.icsi.berkeley.edu/~storn/code.html
 
 require 'plot strings'
-NB. require 'math/deoptim'
-require '~Addons/math/deoptim/deoptim.ijs'
+require 'math/deoptim'
 coclass 'pegde'
 coinsert 'jgl2'
 

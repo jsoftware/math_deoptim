@@ -1,6 +1,6 @@
 NB. deoptim manifest
 
-CAPTION=: 'Differential Evolution for mathematical optimization of multidimensional functions'
+CAPTION=: 'Differential Evolution for optimization of multidimensional functions'
 
 DESCRIPTION=: 0 : 0
 Differential Evolution is a form of evolutionary algorithm. It is relatively robust, simple and fast. 
@@ -11,7 +11,7 @@ http://www.icsi.berkeley.edu/~storn/code.html
 Contributed by Ric Sherlock.
 )
 
-VERSION=: '1.0.0'
+VERSION=: '1.0.1'
 
 RELEASE=: 'j602'
 
