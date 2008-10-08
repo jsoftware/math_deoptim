@@ -3,8 +3,6 @@ NB. =========================================================
 NB. J implementation of Differential Evolution algorithm
 NB. http://www.icsi.berkeley.edu/~storn/code.html
 
-script_z_ '~system/main/pack.ijs'
-
 coclass 'pdeoptim'
 
 
@@ -19,7 +17,7 @@ getDEoptim=: 3 : 0
   args=. ;:'vtr genmax npop   f     cr   popln'
   defs=.     0 ;  100  ; 10 ; 0.8 ; 0.9 ; ''
   args=. args,;:'strategy refresh digits' NB. parameters
-  defs=. defs,     2     ;   10   ; 4  NB. default values
+  defs=. defs,     3     ;   50   ; 4  NB. default values
   (args)=. defs                    NB. set defaults
   (args)=. {:"1 args getArgs x     NB. update defaults
   res=. (".&.> args) deoptim y
@@ -64,7 +62,7 @@ NB.                   vals at each generation. Defaults to 4.
 deoptim=: 3 : 0
   '' deoptim y
 :
-  defs=. 0;100;10;0.8;0.9;'';2;10;4
+  defs=. 0;100;10;0.8;0.9;'';3;50;4
   'vtr genmax npop f cr popln strategy refresh digits'=. x,(#x)}.defs
   'func bounds constr'=. 3{. boxopen y
   nvar=. {:$bounds  NB. number of variables (loci)
@@ -98,10 +96,11 @@ deoptim=: 3 : 0
   nfeval=. npop
   bestval=. bestvalbygen=. <./ vals
   bestvars=. ,bestvarsbygen=. ,:(vals i. bestval) { pop
-  gen=. 1
+  gen=. 0
 
   NB. Differential Evolution algorithm
-  while. (gen <: genmax) *. bestval > vtr do.
+  while. gen=. >:gen 
+         (gen <: genmax) *. bestval > vtr do.
     NB. create trial popln
     trialpop=. (npop?4$#pop) { pop  NB. 4 samples of size npop without replacement
     trialpop=. strategy mutateTrial f;trialpop;bestvars;pop
@@ -136,11 +135,26 @@ NB.     trialpop=.($pop)$(idx{,trialpop) idx},pop
     bestvarsbygen=. bestvarsbygen , bestvars
 
     NB. report progress
-    gen=. >:gen
+    if. (refresh > 0) *. (gen = 1) +. 0 = refresh | gen do.
+      reportProgress bestvars;bestval;gen;digits
+    end.
   end.
 
   NB. Return Results.
+  if. (refresh > 0) do.
+    reportProgress bestvars;bestval;gen;digits
+  end.
   bestvars;bestval;nfeval;gen;bestvarsbygen;bestvalbygen;pop
+)
+
+
+reportProgress=: 3 : 0
+  'bestvars bestval gen digits'=. 4{.y
+  smoutput '======================'
+  smoutput 'Generation: ',":gen
+  smoutput 'Best Value: ', (0 j. digits) ": bestval
+  smoutput 'Best Var set: '
+  smoutput (0 j. digits) ": bestvars
 )
 
 NB. =========================================================
