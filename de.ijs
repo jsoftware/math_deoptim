@@ -47,7 +47,7 @@ NB.                  1 - Best1 (classical version of DE)
 NB.                  2 - Rand1 (classical version of DE)
 NB.                  3 - RandToBest1 (One of best versions)
 NB.                  4 - Best2  (One of best versions)
-NB.      7{ refresh - frequency of reports. Defaults to every 10 generations
+NB.      7{ refresh - frequency of reports. Defaults to every 50 generations
 NB.      8{ digits  - The number of digits to print when printing numeric 
 NB.                   vals at each generation. Defaults to 4.
 deoptim=: 3 : 0
