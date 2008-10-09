@@ -5,7 +5,7 @@ NB. http://www.icsi.berkeley.edu/~storn/code.html
 require 'plot strings'
 require 'math/deoptim'
 coclass 'pegde'
-coinsert 'jgl2'
+coinsert 'pdeoptim jgl2'
 
 NB. =========================================================
 NB. Problem definition - Chebyshev polynomial fitting problem 
@@ -28,6 +28,13 @@ testfunc=: 3 : 0
   objfn res
 )
 
+reportProgress=: 3 : 0
+  'BestVars BestVal Generations Digits'=. 4{.y
+  result=: pack 'BestVars BestVal Generations nFEval Digits'
+  updateOutput''
+)
+
+
 NB.*objfn v Objective function for calcluting value of a set of vars
 NB. value is sum of squared errors from 63 or 103 samples
 NB. errors when value outside _1 & 1 where x is _1 to 1
@@ -41,12 +48,12 @@ NB.*optimize v Applies DE to parameters given & returns DE result
 optimize=: 3 : 0
   vtr=. 1e_12
   genmax=. 2000
-  refresh=. 0
+  refresh=. 30
   args=. (pack 'vtr genmax refresh') pset y
   cntrl=. 'vtr genmax npop f cr strategy refresh' psel args
   updateFunc ('func' pget args)~
   bounds=. |:((#Tcoeff),2)$(- , ]) 'bounds' pget args
-  cntrl getDEoptim ('testfunc_',(>coname''),'_');bounds
+  cntrl getDEoptim 'testfunc';bounds
 )
 
 NB. =========================================================
@@ -70,16 +77,16 @@ xywh 130 54 50 14;cc tbCR trackbar tbs_top;
 xywh 194 54 50 14;cc tbNP trackbar tbs_top;
 xywh 146 8 48 12;cc bStart button;cn "Start";
 xywh 198 8 48 12;cc bClear button;cn "Clear";
-xywh 2 80 247 67;cc gbOutput groupbox;cn "Output";
-xywh 6 92 49 11;cc lblIter static ss_right;cn "Generations :";
-xywh 6 103 49 11;cc lblnEval static ss_right;cn "Evaluations :";
-xywh 6 114 49 11;cc lblVal static ss_right;cn "Cost-Value :";
-xywh 62 92 46 11;cc valIter static;cn "0";
-xywh 62 103 46 11;cc valnEval static;cn "0";
-xywh 62 114 78 11;cc valVal static;cn "0";
+xywh 2 80 247 70;cc gbOutput groupbox;cn "Output";
+xywh 6 91 49 11;cc lblIter static ss_right;cn "Generations :";
+xywh 6 102 49 11;cc lblnEval static ss_right;cn "Evaluations :";
+xywh 6 113 49 11;cc lblVal static ss_right;cn "Cost-Value :";
+xywh 62 91 46 11;cc valIter static;cn "0";
+xywh 62 102 46 11;cc valnEval static;cn "0";
+xywh 62 113 78 11;cc valVal static;cn "0";
 xywh 2 152 247 156;cc deplot isigraph rightscale bottomscale;
-xywh 6 125 49 11;cc lblMem static ss_right;cn "Best member :";
-xywh 62 125 182 21;cc valMem static;cn "0";
+xywh 6 124 49 11;cc lblMem static ss_right;cn "Best member :";
+xywh 62 124 182 25;cc valMem static;cn "0";
 pas 6 6;pcenter;
 rem form end;
 )
