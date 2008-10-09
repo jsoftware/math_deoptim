@@ -99,12 +99,13 @@ deoptim=: 3 : 0
   gen=. 0
 
   NB. Differential Evolution algorithm
-  while. gen=. >:gen 
-         (gen <: genmax) *. bestval > vtr do.
+  while. (gen < genmax) *. bestval > vtr do.
+    gen=. >:gen NB. increment generation
     NB. create trial popln
     trialpop=. (npop?4$#pop) { pop  NB. 4 samples of size npop without replacement
     trialpop=. strategy mutateTrial f;trialpop;bestvars;pop
     NB. crossover
+    NB. trialpop=. (pop&*@:-. + trialpop&* ) cr > (npop,nvar)?@$0  
     trialpop=.  (cr > (npop,nvar)?@$0)} pop ,: trialpop
 
     if. #constr do. NB. check that vars meet constraints
@@ -112,6 +113,7 @@ deoptim=: 3 : 0
         tmp=. (nbad?4$#pop) { pop  NB. sample without replacement
         tmp=. strategy mutateTrial f;tmp;bestvars;isbad#pop
         NB. crossover
+        NB.tmp=.  ((isbad#pop)&*@:-. + tmp&* ) cr > (nbad,nvar)?@$0  
         tmp=.  (cr > (nbad,nvar)?@$0)} (isbad#pop) ,: tmp
         trialpop=. tmp (I.isbad)}trialpop  NB. replace "bad" members of trialpop
       end.
@@ -137,7 +139,6 @@ deoptim=: 3 : 0
       reportProgress bestvars;bestval;gen;digits
     end.
   end.
-  gen=. <:gen  NB. decrement to last run generation
 
   NB. Return Results.
   if. (refresh > 0) *. 0 ~: refresh | gen do.
