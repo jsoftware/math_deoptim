@@ -14,12 +14,12 @@ NB. Coefficients for Chebychev polynomials
 T4=: 1 _8 8
 T8=: 1 _32 160 _256 128
 T16=: 1 _128 2688 _21504 84480 _180224 212992 _131072 32768
-coeff2k=: [: }:@:, 0 ,.~ ] NB. }:,x,.0
-lowlimit=: p.&1.2  NB. calc lower limit at 1.2
+FuncNames=: 'T4 T8 T16'
 
 updateFunc=: 3 : 0
-  Tcoeff=: coeff2k y
+  Tcoeff=: }:,y,.0
   xVect=: ((],-)1.2) ,(%~i:) (9<#Tcoeff){30 50 NB. number of samples
+  LowLimit=: Tcoeff p. 1.2
 )
 
 NB.*testfunc v Evaluates set of vars and calculates value
@@ -34,14 +34,13 @@ reportProgress=: 3 : 0
   updateOutput''
 )
 
-
 NB.*objfn v Objective function for calcluting value of a set of vars
 NB. value is sum of squared errors from 63 or 103 samples
 NB. errors when value outside _1 & 1 where x is _1 to 1
 NB. errors when value is less than lowlimit Tcoeff at _1.2 & 1.2
 objfn=: 3 : 0
   value=. ([: +/ [: *: -. * 1 < |) 2}.y  NB. between _1 & 1
-  value + ([:+/[:(*: * 0&>) (lowlimit Tcoeff) -~ ]) 2{. y NB. _1.2 & 1.2
+  value + ([:+/[:(*: * 0&>) LowLimit -~ ]) 2{. y NB. _1.2 & 1.2
 )
 
 NB.*optimize v Applies DE to parameters given & returns DE result
@@ -51,7 +50,6 @@ optimize=: 3 : 0
   refresh=. 30
   args=. (pack 'vtr genmax refresh') pset y
   cntrl=. 'vtr genmax npop f cr strategy refresh' psel args
-  updateFunc ('func' pget args)~
   bounds=. |:((#Tcoeff),2)$(- , ]) 'bounds' pget args
   cntrl getDEoptim 'testfunc';bounds
 )
@@ -67,11 +65,11 @@ xywh 8 42 33 11;cc lblBounds static;cn "Bounds :";
 xywh 73 42 13 11;cc lblF static;cn "F :";
 xywh 134 42 17 11;cc lblCR static;cn "CR :";
 xywh 195 42 18 11;cc lblNP static;cn "NP :";
-xywh 37 42 22 11;cc edBounds edit ws_border ws_disabled es_readonly;
-xywh 94 42 19 11;cc edF edit ws_border ws_disabled es_readonly;
-xywh 154 42 19 11;cc edCR edit ws_border ws_disabled es_readonly;
-xywh 218 42 19 11;cc edNP edit ws_border ws_disabled es_readonly;
-xywh 6 54 50 14;cc tbBounds trackbar tbs_top;
+xywh 37 42 22 11;cc edBounds edit ws_border es_readonly;
+xywh 94 42 19 11;cc edF edit ws_border es_readonly;
+xywh 154 42 19 11;cc edCR edit ws_border es_readonly;
+xywh 218 42 19 11;cc edNP edit ws_border es_readonly;
+xywh 6 54 59 14;cc tbBounds trackbar tbs_top;
 xywh 70 54 50 14;cc tbF trackbar tbs_top;
 xywh 130 54 50 14;cc tbCR trackbar tbs_top;
 xywh 194 54 50 14;cc tbNP trackbar tbs_top;
@@ -125,6 +123,11 @@ egde_bClear_button=: 3 : 0
   updateOutput''
 )
 
+egde_cblFunc_select=: 3 : 0
+  updateFunc cblFunc~
+  egde_bClear_button''
+)
+
 egde_tbBounds_button=: 3 : 0
   wd 'set edBounds *',tbBounds
 )
@@ -143,14 +146,14 @@ egde_tbNP_button=: 3 : 0
 
 egde_deplot_paint=: 3 : 0
   pd__deplot 'reset'
-  pd__deplot 'xrange _1.5 1.5;yrange _1 3;grids 0 0;'
+  pd__deplot 'xrange _1.5 1.5;yrange _1 10;grids 0 0;'
   pd__deplot 'color red;'
-  pd__deplot _1.2 _1.2 1.2 1.2 ; 3 _1 _1 3
-  pd__deplot _1 _1 1 1 ; 3 1 1 3
+  pd__deplot _2 _1.2 _1.2 1.2 1.2 2; 2|.(4#LowLimit), _1 _1
+  pd__deplot _1 _1 1 1 ; 1000 1 1 1000
   if. 0 = 4!:0 <'result' do.
     pd__deplot 'color blue;'
     NB. plot__deplot _1.01 1.01;(": 'BestVars' pget result),' p. y'
-    vls=. steps _1.2 1.2 100
+    vls=. steps _1.4 1.4 100
     pd__deplot vls;('BestVars' pget result) p. vls
   end.
   pd__deplot 'show'
@@ -169,9 +172,9 @@ updateOutput=: 3 : 0
 )
 
 initControls=: 3 : 0
-  wd 'set cblFunc "T4" "T8" "T16";'
-  wd 'setselect cblFunc 1;'
-  wd 'set cblStrat "DEBest1" "DERand1" "DERandToBest1" "DEBest2";'
+  wd 'set cblFunc ',FuncNames
+  wd 'setselect cblFunc ',": (;:FuncNames) i. <'T8'
+  wd 'set cblStrat DEBest1 DERand1 DERandToBest1 DEBest2'
   wd 'setselect cblStrat 2;'
   wd 'set tbBounds 1 101 491 5 3'
   wd 'set tbF      1  81 201 5 3'
@@ -181,6 +184,7 @@ initControls=: 3 : 0
   wd 'set edF 0.8'
   wd 'set edCR 0.9'
   wd 'set edNP 5'
+  updateFunc T8
   ''
 )
 

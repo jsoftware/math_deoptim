@@ -1,5 +1,8 @@
 math/deoptim - change history
 
+== 1.0.3 ==
+ * chg: Minor improvements and simplification of demo
+
 == 1.0.2 ==
  * chg: Demo updates during optimization
  * fix: Fix bug when providing initial population
