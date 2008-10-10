@@ -30,7 +30,7 @@ NB. only binary crossover implemented
 NB. "The crossover method is not so important although Ken
 NB. Price claims that binomial is never worse than exponential."
 
-NB. y is: list of boxed f;trialpop;({:bestmemit);pop
+NB. y is: list of boxed f;trialpop;bestvars;pop
 NB. x is: strategy. Defaults to 3
 
 NB.*mutateTrial v Strategies for mutating new trial population

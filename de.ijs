@@ -59,14 +59,14 @@ deoptim=: 3 : 0
   nvar=. {:$bounds  NB. number of variables (loci)
 
   NB. check input vars
-  assert. *#func       NB. function must be specified
+  assert. *#func      NB. function must be specified
   assert. *#bounds    NB. bounds must be specified
   assert. </ bounds   NB. lower bounds must be less than upper bounds
   assert. genmax > 0 
   assert. (f >: 0) *. f <: 2   NB. f must be between 0 & 2
   assert. (cr >: 0) *. cr <:1  NB. cr must be between 0 & 1
   assert. strategy e. 1 2 3 4 5
-  refresh=. <.refresh  NB. ensure integer
+  refresh=. <.refresh NB. ensure integer
 
   NB. Initialize population
   if. #pop do.   NB. initial population provided
@@ -74,7 +74,7 @@ deoptim=: 3 : 0
     npop=. #pop
   else.            NB. generate initial population
     npop=. npop*nvar
-    pop=. (npop,nvar)?@$ 0  NB. uniform random [0,1]
+    pop=. (npop,nvar)?@$0  NB. uniform random [0,1]
     pop=. ({.bounds) +"1 pop *"1 -~/bounds
     if. #constr do.
       while. 0< nbad=. +/isbad=. -.constr~ pop do. NB. generate new solns until all meet constraints
@@ -95,18 +95,17 @@ deoptim=: 3 : 0
     NB. create trial popln
     trialpop=. (npop?4$#pop) { pop  NB. 4 samples of size npop without replacement
     trialpop=. strategy mutateTrial f;trialpop;bestvars;pop
-    NB. crossover
-    NB. trialpop=. (pop&*@:-. + trialpop&* ) cr > (npop,nvar)?@$0  
-    trialpop=.  (cr > (npop,nvar)?@$0)} pop ,: trialpop
+    co=. (cr > (npop,nvar)?@$0)     NB. randomize crossover
+    trialpop=.  co} pop ,: trialpop NB. crossover
 
     if. #constr do. NB. check that vars meet constraints
       while. 0< nbad=. +/isbad=. -.constr~ trialpop do.
-        tmp=. (nbad?4$#pop) { pop  NB. sample without replacement
-        tmp=. strategy mutateTrial f;tmp;bestvars;isbad#pop
-        NB. crossover
-        NB.tmp=.  ((isbad#pop)&*@:-. + tmp&* ) cr > (nbad,nvar)?@$0  
-        tmp=.  (cr > (nbad,nvar)?@$0)} (isbad#pop) ,: tmp
-        trialpop=. tmp (I.isbad)}trialpop  NB. replace "bad" members of trialpop
+        tmptp=. (nbad?4$#pop) { pop  NB. sample without replacement
+        tmpp=. isbad#pop
+        tmptp=. strategy mutateTrial f;tmptp;bestvars;tmpp
+        co=. (cr > (nbad,nvar)?@$0) NB. randomize crossover
+        tmptp=.  co} tmpp ,: tmptp  NB. crossover
+        trialpop=. tmptp (I.isbad)}trialpop  NB. replace "bad" members of trialpop
       end.
     end.
 
