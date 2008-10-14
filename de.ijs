@@ -77,16 +77,17 @@ deoptim=: 3 : 0
     pop=. (npop,nvar)?@$0  NB. uniform random [0,1]
     pop=. ({.bounds) +"1 pop *"1 -~/bounds
     if. #constr do.
-      while. 0< nbad=. +/isbad=. -.constr~ pop do. NB. generate new solns until all meet constraints
-        newsolns=. ({.bounds) + -~/bounds * (nbad,nvar)?@$ 0
-        pop=. newsolns (I.-.isgood)}pop
+      while. 0< nbad=. +/isbad=. -.constr~"1 pop do. NB. generate new solns until all meet constraints
+        newsolns=. (nbad,nvar)?@$0
+        newsolns=. ({.bounds) +"1 newsolns *"1 -~/bounds
+        pop=. newsolns (I.isbad)}pop
       end.
     end.
   end.
   vals=. func~"1 pop  NB. evaluate initial popln
   nfeval=. npop
-  bestval=. bestvalbygen=. <./ vals
-  bestvars=. ,bestvarsbygen=. ,:(vals i. bestval) { pop
+  bestvalbygen=. bestval=. <./ vals
+  bestvarsbygen=. ,:bestvars=. (vals i. bestval) { pop
   gen=. 0
 
   NB. Differential Evolution algorithm
@@ -99,7 +100,7 @@ deoptim=: 3 : 0
     trialpop=.  co} pop ,: trialpop NB. crossover
 
     if. #constr do. NB. check that vars meet constraints
-      while. 0< nbad=. +/isbad=. -.constr~ trialpop do.
+      while. 0< nbad=. +/isbad=. -.constr~"1 trialpop do.
         tmptp=. (nbad?4$#pop) { pop  NB. sample without replacement
         tmpp=. isbad#pop
         tmptp=. strategy mutateTrial f;tmptp;bestvars;tmpp

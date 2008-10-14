@@ -28,6 +28,14 @@ objfn=: 3 : 0
 
 ChebchevPoly=: objfn@:p.&xVect NB.Verb for evaluating set of possible coefficients
 
+
+NB. ---------------------------------------------------------
+NB. Problem 2: Find root with constraints
+cubiccoeffs=: 48 8 _20 3
+cubic=: [: ,/ [: | cubiccoeffs&p.
+
+cubicconstr=: [: ,/ 0 >: ] NB. negative root
+
 NB. ---------------------------------------------------------
 NB. Different Control options
 
@@ -49,7 +57,6 @@ Note 'commands to try'
 
 NB. =========================================================
 NB. Actual tests
-NB.! add test/example for constraints function
 
 test=: 3 : 0
   evalfunc=. 'Rosenbrock_',(>coname''),'_'
@@ -74,6 +81,23 @@ test=: 3 : 0
   tmp=. Control  deoptim evalfunc;bounds
   tmp=. Control  getDEoptim evalfunc;bounds
   tmp=. ControlT getDEoptim evalfunc;bounds
+
+  evalfunc=. 'cubic_',(>coname''),'_'
+  bounds=. ,. _10 10
+  constrfunc=. 'cubicconstr_',(>coname''),'_'
+  cntrl=. makeTable 'vtr';1e_12;'genmax';1000;'strategy';3;'refresh';500
+  tmp=. cntrl getDEoptim evalfunc;bounds
+  assert. ('BestVars' pget tmp) e. 1{:: p. cubiccoeffs
+  tmp=. cntrl getDEoptim evalfunc;bounds
+  assert. ('BestVars' pget tmp) e. 1{:: p. cubiccoeffs
+  tmp=. cntrl getDEoptim evalfunc;bounds
+  assert. ('BestVars' pget tmp) e. 1{:: p. cubiccoeffs
+  tmp=. cntrl getDEoptim evalfunc;bounds;constrfunc
+  assert. ('BestVars' pget tmp) = (1;2){:: p. cubiccoeffs
+  tmp=. cntrl getDEoptim evalfunc;bounds;constrfunc
+  assert. ('BestVars' pget tmp) = (1;2){:: p. cubiccoeffs
+  tmp=. cntrl getDEoptim evalfunc;bounds;constrfunc
+  assert. ('BestVars' pget tmp) = (1;2){:: p. cubiccoeffs
 
   'test_deoptim passed'
 )

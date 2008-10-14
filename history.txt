@@ -1,5 +1,9 @@
 math/deoptim - change history
 
+== 1.0.4 ==
+ * fix: Fix bugs when providing constraint function
+ * add: Test case for providing a constraint function
+
 == 1.0.3 ==
  * chg: Minor improvements and simplification of demo
 
