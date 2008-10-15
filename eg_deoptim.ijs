@@ -168,6 +168,7 @@ updateOutput=: 3 : 0
   wd 'set valnEval *', ":      'nFEval' pget result
   wd 'set valVal   *', ":     'BestVal' pget result
   wd 'set valMem   *', ' 'joinstring '0.3' 8!:0 'BestVars' pget result
+  wd 'msgs'
   egde_deplot_paint''
 )
 
