@@ -4,6 +4,7 @@ coclass 'jproject'
 
 PRIMARYFILES=: 0 : 0
 ~Addons/math/deoptim/init
+~Addons/math/deoptim/utils
 ~Addons/math/deoptim/de
 ~Addons/math/deoptim/mutate
 ~Addons/math/deoptim/zfns

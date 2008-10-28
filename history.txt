@@ -1,5 +1,9 @@
 math/deoptim - change history
 
+== 1.0.5 ==
+ * fix: Refresh of outputs for demo in Jwdp
+ * add: sampling utilities 
+
 == 1.0.4 ==
  * fix: Fix bugs when providing constraint function
  * add: Test case for providing a constraint function

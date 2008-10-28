@@ -8,6 +8,32 @@ coclass 'pdeoptim'
 
 
 NB. =========================================================
+NB. utils for Differential Evolution addon
+
+NB.*getSampleNR v Sample from array without replacement
+NB. y is array to sample
+NB. x is optional number and size of samples
+NB.      defaults to 1 sample of same size as y
+NB. getSampleNR=: ((1 , #) $: ]) :(({:@[ ? {.@[ $ #@]) { ])
+getSampleNR=: 3 : 0
+  (1 , #y) getSampleNR y
+:
+  'num sz'=. x
+  (sz ? num $ #y){y
+)
+
+NB.*getSampleR v Sample from array with replacement
+NB. y is array to sample
+NB. x is optional number and size of samples
+NB.      defaults to 1 sample of same size as y
+NB. getSampleR=: ((1 , #) $: ]) :(([ ?@$ #@]) { ])
+getSampleR=: 3 : 0
+  (1 , #y) getSampleR y
+:
+  (x ?@$ #y){y
+)
+
+NB. =========================================================
 NB. Differential Evolution algorithm
 
 NB.*getDEoptim v Calls deoptim but allows 2-col table input & output
@@ -103,14 +129,14 @@ deoptim=: 3 : 0
   while. (gen < genmax) *. bestval > vtr do.
     gen=. >:gen NB. increment generation
     NB. create trial popln
-    trialpop=. (npop?4$#pop) { pop  NB. 4 samples of size npop without replacement
+    trialpop=. (4,npop) getSampleNR pop  NB. 4 samples of size npop without replacement
     trialpop=. strategy mutateTrial f;trialpop;bestvars;pop
     co=. (cr > (npop,nvar)?@$0)     NB. randomize crossover
     trialpop=.  co} pop ,: trialpop NB. crossover
 
     if. #constr do. NB. check that vars meet constraints
       while. 0< nbad=. +/isbad=. -.constr~"1 trialpop do.
-        tmptp=. (nbad?4$#pop) { pop  NB. sample without replacement
+        tmptp=. (4,nbad) getSampleNR pop  NB. sample without replacement
         tmpp=. isbad#pop
         tmptp=. strategy mutateTrial f;tmptp;bestvars;tmpp
         co=. (cr > (nbad,nvar)?@$0) NB. randomize crossover
@@ -239,6 +265,7 @@ NB. adapted from Dan Brons parameterized_verbs script.
 paramListToTable=: (([: ({."1@:[ ,. ,@:])&>/ <.&# {.&.> ,&<) boxxopen)^:isList
 
 NB.*packarg v Package namelist
+NB. result: 2-column table of boxed name-value pairs
 NB. Similar to pack from pack.ijs but doesn't sort names
 NB. eg: packargs 'imm frq int pay'
 packargs=: [: (, ,&< ".)&> ;:@] :: ]
@@ -271,10 +298,7 @@ npv=: 3 : 0
 ...
 )   NB. remove this comment to finish verb
 
-npv 'pay';(24#1);'int';0.10 5 0.09
-
-
-
+npv makeTable 'pay';(24#1);'int';0.10 5 0.09
 
 
 getWeaned=: 3 : 0
@@ -294,9 +318,9 @@ NB. use partial list of boxed params
 getWeaned 300;1.2
 
 NB. use name-value pairs
-getWeaned (;:'weanrate ndams sexratio'),.1.2;300;0.5
+getWeaned (;:'weanrate ndams sexratio'),.1.3;300;0.55
 NB. OR
-getWeaned makeTable 'weanrate';1.2;'ndams';300;'sexratio';0.5
+getWeaned makeTable 'weanrate';1.3;'ndams';300;'sexratio';0.55
 
 NB. use partial list of name-value pairs
 getWeaned (;:'weanrate ndams'),.1.2;300

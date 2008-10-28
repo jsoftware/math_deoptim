@@ -94,14 +94,14 @@ deoptim=: 3 : 0
   while. (gen < genmax) *. bestval > vtr do.
     gen=. >:gen NB. increment generation
     NB. create trial popln
-    trialpop=. (npop?4$#pop) { pop  NB. 4 samples of size npop without replacement
+    trialpop=. (4,npop) getSampleNR pop  NB. 4 samples of size npop without replacement
     trialpop=. strategy mutateTrial f;trialpop;bestvars;pop
     co=. (cr > (npop,nvar)?@$0)     NB. randomize crossover
     trialpop=.  co} pop ,: trialpop NB. crossover
 
     if. #constr do. NB. check that vars meet constraints
       while. 0< nbad=. +/isbad=. -.constr~"1 trialpop do.
-        tmptp=. (nbad?4$#pop) { pop  NB. sample without replacement
+        tmptp=. (4,nbad) getSampleNR pop  NB. sample without replacement
         tmpp=. isbad#pop
         tmptp=. strategy mutateTrial f;tmptp;bestvars;tmpp
         co=. (cr > (nbad,nvar)?@$0) NB. randomize crossover
