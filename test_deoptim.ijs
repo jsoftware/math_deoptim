@@ -39,16 +39,16 @@ cubicconstr=: [: ,/ 0 >: ] NB. negative root
 NB. ---------------------------------------------------------
 NB. Different Control options
 
-  NB.vtr genmax npop f cr popln strategy refresh digits
-Control=: 1e_6;1000;10;0.8;0.9;'';1;0;4
+  NB.vtr genmax npop f cr popln strategy refresh digits reeval
+Control=: 1e_6;1000;10;0.8;0.9;'';1;0;4;0
 ControlT=: makeTable 'vtr';1e_6;'genmax';1000;'strategy';3;'refresh';100
 
 Note 'commands to try'
- cntrl=: 1e_6;1000;10;0.8;0.9;'';1;10;4
- cntrl=: 1e_6;13000;10;0.7;0.5;'';2;10;4
- cntrl=: 1e_6;1000;10;0.8;0.9;'';3;10;4
- cntrl=: 1e_6;1000;10;0.5;0.9;'';4;10;4
- cntrl=: 0;5000;10;0.8;0.9;'';3;10;4
+ cntrl=: 1e_6;1000;10;0.8;0.9;'';1;10;4;0
+ cntrl=: 1e_6;13000;10;0.7;0.5;'';2;10;4;0
+ cntrl=: 1e_6;1000;10;0.8;0.9;'';3;10;4;0
+ cntrl=: 1e_6;1000;10;0.5;0.9;'';4;10;4;0
+ cntrl=: 0;5000;10;0.8;0.9;'';3;10;4;0
  res=: deoptim 'ChebchevPoly_base_';(|:((#T8),2)$_1000 1000)
  plot _1.01 1.01;'(0{::res) p. y'
  res=: cntrl deoptim 'ChebchevPoly_base_';(|:((#T8),2)$_1000 1000)
@@ -68,6 +68,8 @@ test=: 3 : 0
   tmp=. (makeTable 'strategy';2;'refresh';0) getDEoptim evalfunc;bounds
   tmp=. (makeTable 'strategy';3;'refresh';0) getDEoptim evalfunc;bounds
   tmp=. (makeTable 'strategy';4;'refresh';0) getDEoptim evalfunc;bounds
+  cntrl=. ('reeval';1),('refresh';0),('strategy';2),:'genmax';200
+  tmp=. cntrl getDEoptim evalfunc;bounds
   cntrl=. ('refresh';0),('strategy';2),:'genmax';200
   tmp=. cntrl getDEoptim evalfunc;bounds
   assert. 101<#'BestValbyGen' pget tmp

@@ -7,8 +7,8 @@ getDEoptim=: 3 : 0
   :
   args=. ;:'vtr genmax npop   f     cr   popln'
   defs=.     0 ;  100  ; 10 ; 0.8 ; 0.9 ; ''
-  args=. args,;:'strategy refresh digits' NB. parameters
-  defs=. defs,     3     ;   50   ; 4  NB. default values
+  args=. args,;:'strategy refresh digits reeval' NB. parameters
+  defs=. defs,     3     ;   50   ; 4   ;  0   NB. default values
   (args)=. defs                    NB. set defaults
   (args)=. {:"1 args getArgs x     NB. update defaults
   res=. (".&.> args) deoptim y
@@ -50,11 +50,14 @@ NB.                  4 - Best2  (One of best versions)
 NB.      7{ refresh - frequency of reports. Defaults to every 50 generations
 NB.      8{ digits  - The number of digits to print when printing numeric 
 NB.                   vals at each generation. Defaults to 4.
+NB.      9{ reeval  - Boolean controlling whether the current best popln member
+NB.                   is reevaluated each generation. Defaults to 0.
+NB.                   Useful for stochastic evaluation functions.
 deoptim=: 3 : 0
   '' deoptim y
 :
-  defs=. 0;100;10;0.8;0.9;'';3;50;4
-  'vtr genmax npop f cr pop strategy refresh digits'=. x,(#x)}.defs
+  defs=. 0;100;10;0.8;0.9;'';3;50;4;0
+  'vtr genmax npop f cr pop strategy refresh digits reeval'=. x,(#x)}.defs
   'func bounds constr'=. 3{. boxopen y
   nvar=. {:$bounds  NB. number of variables (loci)
 
@@ -111,7 +114,12 @@ deoptim=: 3 : 0
     end.
 
     trialvals=. func~"1 trialpop  NB. evaluate trial popln
-    NB.! option to re-evaluate best member from last generation??
+
+    if. reeval do.     NB. option to re-evaluate current best member
+      bval=. func~ bestvars
+      vals=. bval (vals i. bestval)} vals NB. replace old evaluation
+      nfeval=. >:nfeval
+    end.
 
     NB. update current population
     idx=. I. trialvals < vals         NB. which challengers better
