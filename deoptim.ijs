@@ -33,6 +33,7 @@ getSampleR=: 3 : 0
   (x ?@$ #y){y
 )
 
+
 NB. =========================================================
 NB. Differential Evolution algorithm
 
@@ -191,6 +192,7 @@ reportProgress=: 3 : 0
   smoutput (0 j. digits) ": bestvars
 )
 
+
 NB. =========================================================
 NB. strategies to mutate trial population
 
@@ -243,11 +245,13 @@ mutateTrial=: 3 : 0
   end.
 )
 
+
 NB. =========================================================
 NB. Verbs exported to z locale
 
 getDEoptim_z_=: getDEoptim_pdeoptim_
 deoptim_z_=: deoptim_pdeoptim_
+
 
 NB. =========================================================
 NB. Utilities for working with verbs with multiple arguments
