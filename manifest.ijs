@@ -21,6 +21,6 @@ FILES=: 0 : 0
 history.txt
 manifest.ijs
 deoptim.ijs
-test_deoptim.ijs
-eg_deoptim.ijs
+test/test_deoptim.ijs
+demo/eg_deoptim.ijs
 )
