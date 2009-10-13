@@ -1,4 +1,4 @@
-NB. project file: ~Addons/math/deoptim/deoptim
+NB. project file: c:/users/rsherloc/documents/j602-user/jsrc/addons/math/deoptim/deoptim
 
 coclass 'jproject'
 
@@ -26,7 +26,7 @@ OTHERFILES=: 0 : 0
 
 TARGETFILE=: '~Addons/math/deoptim/deoptim.ijs'
 
-TARGETLOCALE=: 'pdeoptim'
+TARGETLOCALE=: ''
 
 TARGETHEADER=: ''
 
