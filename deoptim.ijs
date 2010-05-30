@@ -1,5 +1,6 @@
 NB. built from project: ~Addons/math/deoptim/deoptim
 NB. =========================================================
+NB. math/deoptim
 NB. J implementation of Differential Evolution algorithm
 NB. http://www.icsi.berkeley.edu/~storn/code.html
 
@@ -43,9 +44,9 @@ getDEoptim=: 3 : 0
   args=. ;:'vtr genmax npop   f     cr   popln'
   defs=.     0 ;  100  ; 10 ; 0.8 ; 0.9 ; ''
   args=. args,;:'strategy refresh digits reeval' NB. parameters
-  defs=. defs,     3     ;   50   ; 4   ;  0   NB. default values
-  (args)=. defs                    NB. set defaults
-  (args)=. {:"1 args getArgs x     NB. update defaults
+  defs=. defs,     3     ;   50   ; 4   ;  0     NB. default values
+  (args)=. defs                                  NB. set defaults
+  (args)=. {:"1 args getArgs x                   NB. update defaults
   res=. (".&.> args) deoptim y
   nmes=.;:'BestVars BestVal nFEval Generations BestVarsbyGen BestValbyGen Popln'
   nmes,.res
@@ -94,25 +95,25 @@ deoptim=: 3 : 0
   defs=. 0;100;10;0.8;0.9;'';3;50;4;0
   'vtr genmax npop f cr pop strategy refresh digits reeval'=. x,(#x)}.defs
   'func bounds constr'=. 3{. boxopen y
-  nvar=. {:$bounds  NB. number of variables (loci)
+  nvar=. {:$bounds             NB. number of variables (loci)
 
   NB. check input vars
-  assert. *#func      NB. function must be specified
-  assert. *#bounds    NB. bounds must be specified
-  assert. </ bounds   NB. lower bounds must be less than upper bounds
+  assert. *#func               NB. function must be specified
+  assert. *#bounds             NB. bounds must be specified
+  assert. </ bounds            NB. lower bounds must be less than upper bounds
   assert. genmax > 0 
   assert. (f >: 0) *. f <: 2   NB. f must be between 0 & 2
   assert. (cr >: 0) *. cr <:1  NB. cr must be between 0 & 1
   assert. strategy e. 1 2 3 4 5
-  refresh=. <.refresh NB. ensure integer
+  refresh=. <.refresh          NB. ensure integer
 
   NB. Initialize population
-  if. #pop do.   NB. initial population provided
-    assert. nvar = {:$ pop NB. popln & bounds have same nCols
+  if. #pop do.                 NB. initial population provided
+    assert. nvar = {:$ pop     NB. popln & bounds have same nCols
     npop=. #pop
-  else.            NB. generate initial population
+  else.                        NB. generate initial population
     npop=. npop*nvar
-    pop=. (npop,nvar)?@$0  NB. uniform random [0,1]
+    pop=. (npop,nvar)?@$0      NB. uniform random [0,1]
     pop=. ({.bounds) +"1 pop *"1 -~/bounds
     if. #constr do.
       while. 0< nbad=. +/isbad=. -.constr~"1 pop do. NB. generate new solns until all meet constraints
@@ -122,7 +123,7 @@ deoptim=: 3 : 0
       end.
     end.
   end.
-  vals=. func~"1 pop  NB. evaluate initial popln
+  vals=. func~"1 pop                     NB. evaluate initial popln
   nfeval=. npop
   bestvalbygen=. bestval=. <./ vals
   bestvarsbygen=. ,:bestvars=. (vals i. bestval) { pop
@@ -130,36 +131,36 @@ deoptim=: 3 : 0
 
   NB. Differential Evolution algorithm
   while. (gen < genmax) *. bestval > vtr do.
-    gen=. >:gen NB. increment generation
+    gen=. >:gen                          NB. increment generation
     NB. create trial popln
     trialpop=. (4,npop) getSampleNR pop  NB. 4 samples of size npop without replacement
     trialpop=. strategy mutateTrial f;trialpop;bestvars;pop
-    co=. (cr > (npop,nvar)?@$0)     NB. randomize crossover
-    trialpop=.  co} pop ,: trialpop NB. crossover
+    co=. (cr > (npop,nvar)?@$0)          NB. randomize crossover
+    trialpop=.  co} pop ,: trialpop      NB. crossover
 
-    if. #constr do. NB. check that vars meet constraints
+    if. #constr do.                      NB. check that vars meet constraints
       while. 0< nbad=. +/isbad=. -.constr~"1 trialpop do.
-        tmptp=. (4,nbad) getSampleNR pop  NB. sample without replacement
+        tmptp=. (4,nbad) getSampleNR pop NB. sample without replacement
         tmpp=. isbad#pop
         tmptp=. strategy mutateTrial f;tmptp;bestvars;tmpp
-        co=. (cr > (nbad,nvar)?@$0) NB. randomize crossover
-        tmptp=.  co} tmpp ,: tmptp  NB. crossover
+        co=. (cr > (nbad,nvar)?@$0)      NB. randomize crossover
+        tmptp=.  co} tmpp ,: tmptp       NB. crossover
         trialpop=. tmptp (I.isbad)}trialpop  NB. replace "bad" members of trialpop
       end.
     end.
 
-    trialvals=. func~"1 trialpop  NB. evaluate trial popln
+    trialvals=. func~"1 trialpop         NB. evaluate trial popln
 
-    if. reeval do.     NB. option to re-evaluate current best member
+    if. reeval do.                       NB. option to re-evaluate current best member
       bval=. func~ bestvars
       vals=. bval (vals i. bestval)} vals NB. replace old evaluation
       nfeval=. >:nfeval
     end.
 
     NB. update current population
-    idx=. I. trialvals < vals         NB. which challengers better
-    pop=.  (idx{trialpop)  idx} pop   NB. replace beaten members 
-    vals=. (idx{trialvals) idx} vals  NB. replace beaten evaluations
+    idx=. I. trialvals < vals            NB. which challengers better
+    pop=.  (idx{trialpop)  idx} pop      NB. replace beaten members 
+    vals=. (idx{trialvals) idx} vals     NB. replace beaten evaluations
     
     NB. update results
     nfeval=. nfeval + npop
@@ -232,7 +233,7 @@ mutateTrial=: 3 : 0
   3 mutateTrial y
   :
   'f tpop bestmem pop'=. 4{.y
-  select. x NB. choose mutation strategy
+  select. x                 NB. choose mutation strategy
     case. 1 do.             NB. DEBest1
       tpop=. bestmem +"1 f * -/ 1 2{tpop
     case. 2 do.             NB. DERand1
@@ -259,8 +260,7 @@ NB.  * arguments given as name-value pairs in 2-col table
 NB.  * allows list of first n args in expected order
 NB.  * verb user cannot define un-expected arg names
 
-NB. require 'pack'
-script_z_ '~system/main/pack.ijs'
+require 'pack'
 
 coclass 'pargs'
 

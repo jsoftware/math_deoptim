@@ -38,7 +38,7 @@ mutateTrial=: 3 : 0
   3 mutateTrial y
   :
   'f tpop bestmem pop'=. 4{.y
-  select. x NB. choose mutation strategy
+  select. x                 NB. choose mutation strategy
     case. 1 do.             NB. DEBest1
       tpop=. bestmem +"1 f * -/ 1 2{tpop
     case. 2 do.             NB. DERand1

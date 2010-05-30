@@ -10,31 +10,57 @@ NB. create nouns and verbs for testing
 
 NB. ---------------------------------------------------------
 NB. Problem 0: Rosenbrock function
+NB. find minimum value of Rosenbrock function
+NB. http://en.wikipedia.org/wiki/Rosenbrock_function
+NB. The Objective is simply the function itself.
 Rosenbrock=: 3 : 0
-  'x1 x2'=. 2{. y
-  (100 * *:(x2 - *:x1)) + *:(1 - x1)
+  'x y'=. 2{. y
+  (100 * *:(y - *:x)) + *:(1 - x)
 )
+Rosenbrock=:  *:@(1-[) + 100 * *:@(- *:)~/
+Rosenbrock=: *:@:-.@{. + 100 * *:@({: - *:@{.) NB. Rosenbrock x,:y
 
 NB. ---------------------------------------------------------
 NB. Problem 1: Fitting Chebychev polynomial
-T8=: 1 0 _32 0 160 0 _256 0 128
-lowerlimit=: T8 p. 1.2        NB. calc lower limit at 1.2
-xVect=: ((],-)1.2) ,(%~i:) 30 NB. points to sample at
+NB. Use deoptim to find the coefficients for Chebychev polynomial of degree 8 (T8)
+NB. For the interval _1 <: x <: 1 all of the extrema of 
+NB. Chebychev polynomials are either _1 or 1, 
+NB. i.e. 1 is the maximum absolute value of the polynomial 
+NB. for the interval _1 <: x <: 1.
+T8=: 1 0 _32 0 160 0 _256 0 128   NB. Actual coefficients for T8
 
+lowerlimit=: T8 p. 1.2            NB. calc lower limit at 1.2
+
+NB. Objective function (measure of solution's fitness) is:
+NB. sum of squared residuals outside _1,1 for a selection of 
+NB. points sampled in the interval _1 <: x <: 1
+NB.     plus
+NB. sum of squared residuals below lowerlimit at _1.2 and 1.2.
 objfn=: 3 : 0
-  res=. ([: +/ [: *: -. * 1 < |) 2}.y  NB. between _1 & 1
-  res + ([:+/[:(*: * 0&>) lowerlimit -~ ]) 2{. y NB. _1.2 & 1.2
+  res=. +/ *: (-. * 1 < |) 2}.y           NB. between _1 & 1
+  res + +/ *: (#~ 0 > -&lowerlimit) 2{. y NB. _1.2 & 1.2
 )
 
-ChebchevPoly=: objfn@:p.&xVect NB.Verb for evaluating set of possible coefficients
+xVect=: ((],-)1.2) ,(%~i:) 300            NB. points to sample at
+
+ChebchevPoly=: objfn@:p.&xVect            NB.Verb for evaluating set of possible coefficients
 
 
 NB. ---------------------------------------------------------
 NB. Problem 2: Find root with constraints
+NB. The following cubic has 3 roots (2 positive, 1 negative)
+NB. Use deoptim to find a root
+NB. Use constraints for test values to find negative root
 cubiccoeffs=: 48 8 _20 3
-cubic=: [: ,/ [: | cubiccoeffs&p.
 
-cubicconstr=: [: ,/ 0 >: ] NB. negative root
+cubic=: [: ,/ [: | cubiccoeffs&p.    NB. absolute residuals of cubic evaluated at test value
+
+cubicconstr=: [: ,/ 0 >: ]           NB. test values for root must be less than or equal to zero
+
+Note 'Explore Cubic'
+plot _2 8;'cubiccoeffs&p. y'         NB. plot cubic
+p. cubiccoeffs                       NB. find roots directly
+)
 
 NB. ---------------------------------------------------------
 NB. Different Control options
@@ -44,7 +70,7 @@ Control=: 1e_6;1000;10;0.8;0.9;'';1;0;4;0
 ControlT=: makeTable 'vtr';1e_6;'genmax';1000;'strategy';3;'refresh';100
 
 Note 'commands to try'
- cntrl=: 1e_6;1000;10;0.8;0.9;'';1;10;4;0
+ cntrl=: 1e_6;1000;10;0.8;0.9;'';1;10;4;0    NB. potential left args
  cntrl=: 1e_6;13000;10;0.7;0.5;'';2;10;4;0
  cntrl=: 1e_6;1000;10;0.8;0.9;'';3;10;4;0
  cntrl=: 1e_6;1000;10;0.5;0.9;'';4;10;4;0
