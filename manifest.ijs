@@ -13,7 +13,7 @@ Contributed by Ric Sherlock.
 
 VERSION=: '1.0.6'
 
-RELEASE=: 'j602'
+RELEASE=: 'j602 701'
 
 PLATFORMS=: 'win linux darwin'
 
