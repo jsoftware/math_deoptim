@@ -1,12 +1,9 @@
-NB. built from project: ~Addons/math/deoptim/deoptim
 NB. =========================================================
 NB. math/deoptim
 NB. J implementation of Differential Evolution algorithm
 NB. http://www.icsi.berkeley.edu/~storn/code.html
 
-
 coclass 'pdeoptim'
-
 NB. =========================================================
 NB. utils for Differential Evolution addon
 
@@ -32,8 +29,6 @@ getSampleR=: 3 : 0
 :
   (x ?@$ #y){y
 )
-
-
 NB. =========================================================
 NB. Differential Evolution algorithm
 
@@ -191,8 +186,6 @@ reportProgress=: 3 : 0
   smoutput 'Best Var set: '
   smoutput (0 j. digits) ": bestvars
 )
-
-
 NB. =========================================================
 NB. strategies to mutate trial population
 
@@ -244,15 +237,11 @@ mutateTrial=: 3 : 0
       tpop=. bestmem +"1 f * (-/0 1{tpop) + -/ 2 3{tpop
   end.
 )
-
-
 NB. =========================================================
 NB. Verbs exported to z locale
 
 getDEoptim_z_=: getDEoptim_pdeoptim_
 deoptim_z_=: deoptim_pdeoptim_
-
-
 NB. =========================================================
 NB. Utilities for working with verbs with multiple arguments
 NB.  * can specify default values for args
