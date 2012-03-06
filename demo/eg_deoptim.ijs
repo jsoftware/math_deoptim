@@ -100,11 +100,12 @@ create=: 3 : 0
   wd EGDE
   NB. initialize form here
   initControls''
-  wd 'pshow;'
+  wd 'pshow;pshow sw_hide'
   deplot=: conew 'jzplot'
   PForm__deplot=: 'myplot'
   PFormhwnd__deplot=: wd 'qhwndp'
   PId__deplot=: 'deplot'
+  wd 'pshow;'
   wdloop^:(-.IFJ6)''
 )
 
