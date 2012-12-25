@@ -103,7 +103,7 @@ create=: 3 : 0
   wd 'pshow;pshow sw_hide'
   deplot=: conew 'jzplot'
   PForm__deplot=: 'myplot'
-  PFormhwnd__deplot=: wd 'qhwndp'
+  PFormhwnd__deplot=: wdqhwndp''
   PId__deplot=: 'deplot'
   wd 'pshow;'
   evtloop^:(-.IFJ6)''
