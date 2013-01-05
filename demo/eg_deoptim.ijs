@@ -95,9 +95,56 @@ pas 6 6;pcenter;
 rem form end;
 )
 
+EGDEQT=: 0 : 0
+pc egde qtwd;pn "Differential Evolution Example";
+bin v;
+bin h;
+xywh 2 8 60 60;cc cblFunc combolist;
+xywh 62 8 60 60;cc cblStrat combolist;
+bin s;
+xywh 146 8 48 12;cc bStart button;cn "Start";
+xywh 198 8 48 12;cc bClear button;cn "Clear";
+bin z;
+xywh 2 29 247 50;cc gbParams groupbox;cn "Parameters";
+bin h;
+xywh 8 42 33 11;cc lblBounds static;cn "Bounds :";
+xywh 37 42 22 11;cc edBounds edit ws_border es_readonly;
+xywh 73 42 13 11;cc lblF static;cn "F :";
+xywh 94 42 19 11;cc edF edit ws_border es_readonly;
+xywh 134 42 17 11;cc lblCR static;cn "CR :";
+xywh 154 42 19 11;cc edCR edit ws_border es_readonly;
+xywh 195 42 18 11;cc lblNP static;cn "NP :";
+xywh 218 42 19 11;cc edNP edit ws_border es_readonly;
+bin z;
+bin h;
+xywh 6 54 59 14;cc tbBounds trackbar tbs_top;
+xywh 70 54 50 14;cc tbF trackbar tbs_top;
+xywh 130 54 50 14;cc tbCR trackbar tbs_top;
+xywh 194 54 50 14;cc tbNP trackbar tbs_top;
+bin z;
+xywh 2 80 247 70;cc gbOutput groupbox;cn "Output";
+bin h;
+xywh 6 91 49 11;cc lblIter static ss_right;cn "Generations :";
+xywh 62 91 46 11;cc valIter static;cn "0";
+bin szh;
+xywh 6 102 49 11;cc lblnEval static ss_right;cn "Evaluations :";
+xywh 62 102 46 11;cc valnEval static;cn "0";
+bin szh;
+xywh 6 113 49 11;cc lblVal static ss_right;cn "Cost-Value :";
+xywh 62 113 78 11;cc valVal static;cn "0";
+bin szh;
+xywh 6 124 49 11;cc lblMem static ss_right;cn "Best member :";
+xywh 62 124 182 25;cc valMem static;cn "0";
+bin sz;
+xywh 2 152 247 156;cc deplot isigraph rightscale bottomscale;
+bin v;
+pas 6 6;pcenter;
+rem form end;
+)
+
 NB. ---------------------------------------------------------
 create=: 3 : 0
-  wd EGDE
+  wd IFQT{::EGDE;EGDEQT
   NB. initialize form here
   initControls''
   wd 'pshow;pshow sw_hide'
