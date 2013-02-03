@@ -1,6 +1,6 @@
 math/deoptim - change history
 
-== 1.0.13 ==
+== 1.0.13/14 ==
  * chg: update for j801
 
 == 1.0.7/12 ==

@@ -153,7 +153,7 @@ create=: 3 : 0
   PFormhwnd__deplot=: wdqhwndp''
   PId__deplot=: 'deplot'
   wd 'pshow;'
-  evtloop^:(-.IFJ6)''
+  evtloop''
 )
 
 destroy=: 3 : 0
