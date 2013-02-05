@@ -2,7 +2,7 @@ NB. =========================================================
 NB. GUI for DE example
 NB. http://www.icsi.berkeley.edu/~storn/code.html
 
-require 'gtkwd'
+require^:(-.IFJ6) ::0: 'gtkwd'
 GTKOUTPUT_jzplot_=: 'gtk'
 CONSOLEOUTPUT_jzplot_=: 'gtk'
 
