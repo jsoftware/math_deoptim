@@ -10,29 +10,29 @@ require 'pack'
 coclass 'pargs'
 
 NB.*makeTable v Reshape y as 2-column table
-NB. use to coerce list of boxes to 2-column table
+NB.-descrip: use to coerce list of boxes to 2-column table
 makeTable=: _2 [\ ,
 
 NB.*isList v Is y less than rank 2?
 isList=: 2 > #@$@]
 
 NB.*paramListToTable v Stiches on the first N parameter names to the input list
-NB. adapted from Dan Brons parameterized_verbs script.
+NB.-descrip: adapted from Dan Brons parameterized_verbs script.
 paramListToTable=: (([: ({."1@:[ ,. ,@:])&>/ <.&# {.&.> ,&<) boxxopen)^:isList
 
 NB.*packarg v Package namelist
-NB. result: 2-column table of boxed name-value pairs
-NB. Similar to pack from pack.ijs but doesn't sort names
-NB. eg: packargs 'imm frq int pay'
+NB.-result: 2-column table of boxed name-value pairs
+NB.-note: Similar to pack from pack.ijs but doesn't sort names
+NB.-eg: packargs 'imm frq int pay'
 packargs=: [: (, ,&< ".)&> ;:@] :: ]
 
 NB.*getArgs v Resolves defaults and specified parameters as table of 2-col name-value pairs
-NB. result: 2-column table of name-value pairs
-NB. used at start of multi-param verb to override default values
-NB. y is: list of boxed parameter values in expected order
-NB.       or 2-column table of name-value pairs in any order
-NB. x is: list of argument names in expected order (boxed or space-delimited string)
-NB. Names in x must have already been defined (default values)
+NB.-result: 2-column table of name-value pairs
+NB.-descrip: used at start of multi-param verb to override default values
+NB.-y: list of boxed parameter values in expected order
+NB.-   or 2-column table of name-value pairs in any order
+NB.-x: list of argument names in expected order (boxed or space-delimited string)
+NB.-note: Names in *x* must have already been defined (default values)
 getArgs=: ([ psel packargs@[ pset~ packargs@[ paramListToTable ]) f.
 
 NB. =========================================================

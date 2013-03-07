@@ -2,10 +2,6 @@ NB. =========================================================
 NB. GUI for DE example
 NB. http://www.icsi.berkeley.edu/~storn/code.html
 
-require^:(-.IFJ6) ::0: 'gtkwd'
-GTKOUTPUT_jzplot_=: 'gtk'
-CONSOLEOUTPUT_jzplot_=: 'gtk'
-
 require 'plot strings'
 require 'math/deoptim'
 coclass 'pegde'
@@ -63,88 +59,67 @@ optimize=: 3 : 0
 NB. =========================================================
 NB. Form Definition
 EGDE=: 0 : 0
-pc egde;pn "Differential Evolution Example";
-xywh 2 8 60 60;cc cblFunc combolist;
-xywh 62 8 60 60;cc cblStrat combolist;
-xywh 2 29 247 50;cc gbParams groupbox;cn "Parameters";
-xywh 8 42 33 11;cc lblBounds static;cn "Bounds :";
-xywh 73 42 13 11;cc lblF static;cn "F :";
-xywh 134 42 17 11;cc lblCR static;cn "CR :";
-xywh 195 42 18 11;cc lblNP static;cn "NP :";
-xywh 37 42 22 11;cc edBounds edit ws_border es_readonly;
-xywh 94 42 19 11;cc edF edit ws_border es_readonly;
-xywh 154 42 19 11;cc edCR edit ws_border es_readonly;
-xywh 218 42 19 11;cc edNP edit ws_border es_readonly;
-xywh 6 54 59 14;cc tbBounds trackbar tbs_top;
-xywh 70 54 50 14;cc tbF trackbar tbs_top;
-xywh 130 54 50 14;cc tbCR trackbar tbs_top;
-xywh 194 54 50 14;cc tbNP trackbar tbs_top;
-xywh 146 8 48 12;cc bStart button;cn "Start";
-xywh 198 8 48 12;cc bClear button;cn "Clear";
-xywh 2 80 247 70;cc gbOutput groupbox;cn "Output";
-xywh 6 91 49 11;cc lblIter static ss_right;cn "Generations :";
-xywh 6 102 49 11;cc lblnEval static ss_right;cn "Evaluations :";
-xywh 6 113 49 11;cc lblVal static ss_right;cn "Cost-Value :";
-xywh 62 91 46 11;cc valIter static;cn "0";
-xywh 62 102 46 11;cc valnEval static;cn "0";
-xywh 62 113 78 11;cc valVal static;cn "0";
-xywh 2 152 247 156;cc deplot isigraph rightscale bottomscale;
-xywh 6 124 49 11;cc lblMem static ss_right;cn "Best member :";
-xywh 62 124 182 25;cc valMem static;cn "0";
-pas 6 6;pcenter;
-rem form end;
-)
-
-EGDEQT=: 0 : 0
-pc egde qtwd;pn "Differential Evolution Example";
-bin v;
-bin h;
-xywh 2 8 60 60;cc cblFunc combolist;
-xywh 62 8 60 60;cc cblStrat combolist;
+pc egde qtwd;pn "Differential Evolution Demo";
+bin vh;
+cc cblFunc combolist;
+cc cblStrat combolist;
+set cblStrat items DEBest1 DERand1 DERandToBest1 DEBest2;
+set cblStrat select 2;
 bin s;
-xywh 146 8 48 12;cc bStart button;cn "Start";
-xywh 198 8 48 12;cc bClear button;cn "Clear";
+cc bStart button;cn "Start";
+cc bClear button;cn "Clear";
+bin zv;
+
+groupbox Parameters;
+bin hv;
+cc  lblBounds static center;cn "Bounds:";
+cc  edBounds edit readonly center;
+set edBounds text 100;
+cc  slBounds slider 1 1 3 20 491 100;
+bin zv;
+cc  lblF static center;cn "F:";
+cc  edF edit readonly center;
+set edF text 0.8;
+cc  slF slider 1 0 2 10 201 81;
+bin zv;
+cc  lblCR static center;cn "CR:";
+cc  edCR edit readonly center;
+set edCR text 0.9;
+cc  slCR slider 1 0 2 10 101 91;
+bin zv;
+cc  lblNP static center;cn "NP:";
+cc  edNP edit readonly center;
+set edNP text 5;
+cc  slNP slider 1 5 1 1 10 1;
 bin z;
-xywh 2 29 247 50;cc gbParams groupbox;cn "Parameters";
-bin h;
-xywh 8 42 33 11;cc lblBounds static;cn "Bounds :";
-xywh 37 42 22 11;cc edBounds edit ws_border es_readonly;
-xywh 73 42 13 11;cc lblF static;cn "F :";
-xywh 94 42 19 11;cc edF edit ws_border es_readonly;
-xywh 134 42 17 11;cc lblCR static;cn "CR :";
-xywh 154 42 19 11;cc edCR edit ws_border es_readonly;
-xywh 195 42 18 11;cc lblNP static;cn "NP :";
-xywh 218 42 19 11;cc edNP edit ws_border es_readonly;
+groupboxend;
+bin s1z;
+
+groupbox Output;
+bin vhv;
+cc lblIter static center;cn "Generations:";
+cc valIter static center;cn "0";
+bin zv;
+cc lblnEval static center;cn "Evaluations:";
+cc valnEval static center;cn "0";
+bin zv;
+cc lblVal static center;cn "Cost-Value:";
+cc valVal static center;cn "0";
+bin zzs1v;
+cc lblMem static;cn "Best member:";
+cc valMem static;cn "0";
 bin z;
-bin h;
-xywh 6 54 59 14;cc tbBounds trackbar tbs_top;
-xywh 70 54 50 14;cc tbF trackbar tbs_top;
-xywh 130 54 50 14;cc tbCR trackbar tbs_top;
-xywh 194 54 50 14;cc tbNP trackbar tbs_top;
+groupboxend;
 bin z;
-xywh 2 80 247 70;cc gbOutput groupbox;cn "Output";
-bin h;
-xywh 6 91 49 11;cc lblIter static ss_right;cn "Generations :";
-xywh 62 91 46 11;cc valIter static;cn "0";
-bin szh;
-xywh 6 102 49 11;cc lblnEval static ss_right;cn "Evaluations :";
-xywh 62 102 46 11;cc valnEval static;cn "0";
-bin szh;
-xywh 6 113 49 11;cc lblVal static ss_right;cn "Cost-Value :";
-xywh 62 113 78 11;cc valVal static;cn "0";
-bin szh;
-xywh 6 124 49 11;cc lblMem static ss_right;cn "Best member :";
-xywh 62 124 182 25;cc valMem static;cn "0";
-bin sz;
-xywh 2 152 247 156;cc deplot isigraph rightscale bottomscale;
-bin v;
-pas 6 6;pcenter;
+
+wh 247 256;cc deplot isigraph;
+set deplot stretch 1;
 rem form end;
 )
 
 NB. ---------------------------------------------------------
 create=: 3 : 0
-  wd IFQT{::EGDE;EGDEQT
+  wd EGDE
   NB. initialize form here
   initControls''
   wd 'pshow;pshow sw_hide'
@@ -183,20 +158,20 @@ egde_cblFunc_select=: 3 : 0
   egde_bClear_button''
 )
 
-egde_tbBounds_button=: 3 : 0
-  wd 'set edBounds *',tbBounds
+egde_slBounds_changed=: 3 : 0
+  wd 'set edBounds text *',slBounds
 )
 
-egde_tbF_button=: 3 : 0
-  wd 'set edF ',": 100 %~ <: 0".tbF
+egde_slF_changed=: 3 : 0
+  wd 'set edF text *',": 0 >. 100 %~ <: 0".slF
 )
 
-egde_tbCR_button=: 3 : 0
-  wd 'set edCR ',": 100 %~ <: 0".tbCR
+egde_slCR_changed=: 3 : 0
+  wd 'set edCR text *',": 0 >. 100 %~ <: 0".slCR
 )
 
-egde_tbNP_button=: 3 : 0
-  wd 'set edNP ',": 4 + 0".tbNP
+egde_slNP_changed=: 3 : 0
+  wd 'set edNP text *',": 0".slNP
 )
 
 egde_deplot_paint=: 3 : 0
@@ -219,27 +194,17 @@ updateOutput=: 3 : 0
   if. 0~: 4!:0 <'result' do.
     result=. (0;0;0;0);<''
   end.
-  wd 'set valIter  *', ": 'Generations' pget result
-  wd 'set valnEval *', ":      'nFEval' pget result
-  wd 'set valVal   *', ":     'BestVal' pget result
-  wd 'set valMem   *', ' 'joinstring '0.3' 8!:0 'BestVars' pget result
+  wd 'set valIter  text *', ": 'Generations' pget result
+  wd 'set valnEval text *', ":      'nFEval' pget result
+  wd 'set valVal   text *', ":     'BestVal' pget result
+  wd 'set valMem   text *', ' 'joinstring '0.3' 8!:0 'BestVars' pget result
   wd 'msgs'
   egde_deplot_paint''
 )
 
 initControls=: 3 : 0
-  wd 'set cblFunc ',FuncNames
-  wd 'setselect cblFunc ',": (;:FuncNames) i. <'T8'
-  wd 'set cblStrat DEBest1 DERand1 DERandToBest1 DEBest2'
-  wd 'setselect cblStrat 2;'
-  wd 'set tbBounds 1 101 491 5 3'
-  wd 'set tbF      1  81 201 5 3'
-  wd 'set tbCR     1  91 101 5 3'
-  wd 'set tbNP     1   1   6 1 3'
-  wd 'set edBounds 100'
-  wd 'set edF 0.8'
-  wd 'set edCR 0.9'
-  wd 'set edNP 5'
+  wd 'set cblFunc items ',FuncNames
+  wd 'set cblFunc select ',": (;:FuncNames) i. <'T8'
   updateFunc T8
   ''
 )

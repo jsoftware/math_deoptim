@@ -8,10 +8,10 @@ NB. =========================================================
 NB. utils for Differential Evolution addon
 
 NB.*getSampleNR v Sample from array without replacement
-NB. y is array to sample
-NB. x is optional number and size of samples
-NB.      defaults to 1 sample of same size as y
-NB. getSampleNR=: ((1 , #) $: ]) : (] {~ {:@[ ? {.@[ $ #@])
+NB.-y: array to sample
+NB.-x: optional number and size of samples
+NB.-      defaults to 1 sample of same size as y
+NB.-note: getSampleNR=: ((1 , #) $: ]) : (] {~ {:@[ ? {.@[ $ #@])
 getSampleNR=: 3 : 0
   (1 , #y) getSampleNR y
 :
@@ -20,10 +20,10 @@ getSampleNR=: 3 : 0
 )
 
 NB.*getSampleR v Sample from array with replacement
-NB. y is array to sample
-NB. x is optional number and size of samples
-NB.      defaults to 1 sample of same size as y
-NB. getSampleR=: ((1 , #) $: ]) : (] {~ [ ?@$ #@])
+NB.-y: array to sample
+NB.-x: optional number and size of samples
+NB.-     defaults to 1 sample of same size as y
+NB.-note: getSampleR=: ((1 , #) $: ]) : (] {~ [ ?@$ #@])
 getSampleR=: 3 : 0
   (1 , #y) getSampleR y
 :
@@ -48,42 +48,42 @@ getDEoptim=: 3 : 0
 )
 
 NB.*deoptim v Optimize using Differential Evolution
-NB. result is: 2-item list of boxed arguments
-NB.         0{ bestvars - best set of variables found
-NB.         1{ bestval - value of func corresponding to bestmem
-NB.         2{ nfeval - number of func evaluations
-NB.         3{ gen - number of procedure generations
-NB.         4{ bestvarsbygen - best set of variables found at each generation
-NB.         5{ bestvalbygen - best values of func corresponding to bestvarsbygen
-NB.         6{ popln - the last generated population of variable sets
-NB.         7{ bounds - lower & upper boundaries
-NB. y is: 2-item list of boxed arguments
-NB.      0{ func - String naming a function f(x,y) to minimize, with first argument 
-NB.              the vector of variables over which minimization is to take place. 
-NB.              It should return a scalar result. Empty values are not allowed.
-NB.      1{ bounds - 2 by nvar table describing the lower ({.) and upper ({:) bounds on the variables
-NB.      2{ constr - optional string naming a function that tests variables to see if they meet constraints
-NB.              Use for constraints more complex than just bounds.
-NB.              Members for popln generated until NP*nVar members generated that meet all constraints
-NB.              Defaults to ''
-NB. x is: optional list of boxed control parameters
-NB.      0{ vtr - "Value To Reach". Defaults to __
-NB.      1{ genmax - max number of generations. Defaults to 100
-NB.      2{ npop - number of population members per variable. Defaults to 10 (i.e popsize = 10*nvars)
-NB.      3{ f - Stepsize from interval[0,2]. Defaults to 0.8
-NB.      4{ cr - Crossover probability from interval [0,1]. Default to 0.9.
-NB.      5{ popln - an initial population used as a starting popln. Default empty
-NB.      6{ strategy - defines the binomial DE-strategy used in the optim procedure
-NB.                  1 - Best1 (classical version of DE)
-NB.                  2 - Rand1 (classical version of DE)
-NB.                  3 - RandToBest1 (One of best versions)
-NB.                  4 - Best2  (One of best versions)
-NB.      7{ refresh - frequency of reports. Defaults to every 50 generations
-NB.      8{ digits  - The number of digits to print when printing numeric 
-NB.                   vals at each generation. Defaults to 4.
-NB.      9{ reeval  - Boolean controlling whether the current best popln member
-NB.                   is reevaluated each generation. Defaults to 0.
-NB.                   Useful for stochastic evaluation functions.
+NB.-result: 2-item list of boxed arguments
+NB.-        0{ bestvars - best set of variables found
+NB.-        1{ bestval - value of func corresponding to bestmem
+NB.-        2{ nfeval - number of func evaluations
+NB.-        3{ gen - number of procedure generations
+NB.-        4{ bestvarsbygen - best set of variables found at each generation
+NB.-        5{ bestvalbygen - best values of func corresponding to bestvarsbygen
+NB.-        6{ popln - the last generated population of variable sets
+NB.-        7{ bounds - lower & upper boundaries
+NB.-y: 2-item list of boxed arguments
+NB.-     0{ func - String naming a function f(x,y) to minimize, with first argument 
+NB.-             the vector of variables over which minimization is to take place. 
+NB.-             It should return a scalar result. Empty values are not allowed.
+NB.-     1{ bounds - 2 by nvar table describing the lower ({.) and upper ({:) bounds on the variables
+NB.-     2{ constr - optional string naming a function that tests variables to see if they meet constraints
+NB.-             Use for constraints more complex than just bounds.
+NB.-             Members for popln generated until NP*nVar members generated that meet all constraints
+NB.-             Defaults to ''
+NB.-x: optional list of boxed control parameters
+NB.-     0{ vtr - "Value To Reach". Defaults to __
+NB.-     1{ genmax - max number of generations. Defaults to 100
+NB.-     2{ npop - number of population members per variable. Defaults to 10 (i.e popsize = 10*nvars)
+NB.-     3{ f - Stepsize from interval[0,2]. Defaults to 0.8
+NB.-     4{ cr - Crossover probability from interval [0,1]. Default to 0.9.
+NB.-     5{ popln - an initial population used as a starting popln. Default empty
+NB.-     6{ strategy - defines the binomial DE-strategy used in the optim procedure
+NB.-                 1 - Best1 (classical version of DE)
+NB.-                 2 - Rand1 (classical version of DE)
+NB.-                 3 - RandToBest1 (One of best versions)
+NB.-                 4 - Best2  (One of best versions)
+NB.-     7{ refresh - frequency of reports. Defaults to every 50 generations
+NB.-     8{ digits  - The number of digits to print when printing numeric 
+NB.-                  vals at each generation. Defaults to 4.
+NB.-     9{ reeval  - Boolean controlling whether the current best popln member
+NB.-                  is reevaluated each generation. Defaults to 0.
+NB.-                  Useful for stochastic evaluation functions.
 deoptim=: 3 : 0
   '' deoptim y
 :
@@ -218,10 +218,10 @@ NB. only binary crossover implemented
 NB. "The crossover method is not so important although Ken
 NB. Price claims that binomial is never worse than exponential."
 
-NB. y is: list of boxed f;trialpop;bestvars;pop
-NB. x is: strategy. Defaults to 3
 
 NB.*mutateTrial v Strategies for mutating new trial population
+NB.-y: list of boxed f;trialpop;bestvars;pop
+NB.-x: strategy. Defaults to 3
 mutateTrial=: 3 : 0
   3 mutateTrial y
   :
@@ -254,29 +254,29 @@ require 'pack'
 coclass 'pargs'
 
 NB.*makeTable v Reshape y as 2-column table
-NB. use to coerce list of boxes to 2-column table
+NB.-descrip: use to coerce list of boxes to 2-column table
 makeTable=: _2 [\ ,
 
 NB.*isList v Is y less than rank 2?
 isList=: 2 > #@$@]
 
 NB.*paramListToTable v Stiches on the first N parameter names to the input list
-NB. adapted from Dan Brons parameterized_verbs script.
+NB.-descrip: adapted from Dan Brons parameterized_verbs script.
 paramListToTable=: (([: ({."1@:[ ,. ,@:])&>/ <.&# {.&.> ,&<) boxxopen)^:isList
 
 NB.*packarg v Package namelist
-NB. result: 2-column table of boxed name-value pairs
-NB. Similar to pack from pack.ijs but doesn't sort names
-NB. eg: packargs 'imm frq int pay'
+NB.-result: 2-column table of boxed name-value pairs
+NB.-note: Similar to pack from pack.ijs but doesn't sort names
+NB.-eg: packargs 'imm frq int pay'
 packargs=: [: (, ,&< ".)&> ;:@] :: ]
 
 NB.*getArgs v Resolves defaults and specified parameters as table of 2-col name-value pairs
-NB. result: 2-column table of name-value pairs
-NB. used at start of multi-param verb to override default values
-NB. y is: list of boxed parameter values in expected order
-NB.       or 2-column table of name-value pairs in any order
-NB. x is: list of argument names in expected order (boxed or space-delimited string)
-NB. Names in x must have already been defined (default values)
+NB.-result: 2-column table of name-value pairs
+NB.-descrip: used at start of multi-param verb to override default values
+NB.-y: list of boxed parameter values in expected order
+NB.-   or 2-column table of name-value pairs in any order
+NB.-x: list of argument names in expected order (boxed or space-delimited string)
+NB.-note: Names in *x* must have already been defined (default values)
 getArgs=: ([ psel packargs@[ pset~ packargs@[ paramListToTable ]) f.
 
 NB. =========================================================

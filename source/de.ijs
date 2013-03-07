@@ -17,42 +17,42 @@ getDEoptim=: 3 : 0
 )
 
 NB.*deoptim v Optimize using Differential Evolution
-NB. result is: 2-item list of boxed arguments
-NB.         0{ bestvars - best set of variables found
-NB.         1{ bestval - value of func corresponding to bestmem
-NB.         2{ nfeval - number of func evaluations
-NB.         3{ gen - number of procedure generations
-NB.         4{ bestvarsbygen - best set of variables found at each generation
-NB.         5{ bestvalbygen - best values of func corresponding to bestvarsbygen
-NB.         6{ popln - the last generated population of variable sets
-NB.         7{ bounds - lower & upper boundaries
-NB. y is: 2-item list of boxed arguments
-NB.      0{ func - String naming a function f(x,y) to minimize, with first argument 
-NB.              the vector of variables over which minimization is to take place. 
-NB.              It should return a scalar result. Empty values are not allowed.
-NB.      1{ bounds - 2 by nvar table describing the lower ({.) and upper ({:) bounds on the variables
-NB.      2{ constr - optional string naming a function that tests variables to see if they meet constraints
-NB.              Use for constraints more complex than just bounds.
-NB.              Members for popln generated until NP*nVar members generated that meet all constraints
-NB.              Defaults to ''
-NB. x is: optional list of boxed control parameters
-NB.      0{ vtr - "Value To Reach". Defaults to __
-NB.      1{ genmax - max number of generations. Defaults to 100
-NB.      2{ npop - number of population members per variable. Defaults to 10 (i.e popsize = 10*nvars)
-NB.      3{ f - Stepsize from interval[0,2]. Defaults to 0.8
-NB.      4{ cr - Crossover probability from interval [0,1]. Default to 0.9.
-NB.      5{ popln - an initial population used as a starting popln. Default empty
-NB.      6{ strategy - defines the binomial DE-strategy used in the optim procedure
-NB.                  1 - Best1 (classical version of DE)
-NB.                  2 - Rand1 (classical version of DE)
-NB.                  3 - RandToBest1 (One of best versions)
-NB.                  4 - Best2  (One of best versions)
-NB.      7{ refresh - frequency of reports. Defaults to every 50 generations
-NB.      8{ digits  - The number of digits to print when printing numeric 
-NB.                   vals at each generation. Defaults to 4.
-NB.      9{ reeval  - Boolean controlling whether the current best popln member
-NB.                   is reevaluated each generation. Defaults to 0.
-NB.                   Useful for stochastic evaluation functions.
+NB.-result: 2-item list of boxed arguments
+NB.-        0{ bestvars - best set of variables found
+NB.-        1{ bestval - value of func corresponding to bestmem
+NB.-        2{ nfeval - number of func evaluations
+NB.-        3{ gen - number of procedure generations
+NB.-        4{ bestvarsbygen - best set of variables found at each generation
+NB.-        5{ bestvalbygen - best values of func corresponding to bestvarsbygen
+NB.-        6{ popln - the last generated population of variable sets
+NB.-        7{ bounds - lower & upper boundaries
+NB.-y: 2-item list of boxed arguments
+NB.-     0{ func - String naming a function f(x,y) to minimize, with first argument 
+NB.-             the vector of variables over which minimization is to take place. 
+NB.-             It should return a scalar result. Empty values are not allowed.
+NB.-     1{ bounds - 2 by nvar table describing the lower ({.) and upper ({:) bounds on the variables
+NB.-     2{ constr - optional string naming a function that tests variables to see if they meet constraints
+NB.-             Use for constraints more complex than just bounds.
+NB.-             Members for popln generated until NP*nVar members generated that meet all constraints
+NB.-             Defaults to ''
+NB.-x: optional list of boxed control parameters
+NB.-     0{ vtr - "Value To Reach". Defaults to __
+NB.-     1{ genmax - max number of generations. Defaults to 100
+NB.-     2{ npop - number of population members per variable. Defaults to 10 (i.e popsize = 10*nvars)
+NB.-     3{ f - Stepsize from interval[0,2]. Defaults to 0.8
+NB.-     4{ cr - Crossover probability from interval [0,1]. Default to 0.9.
+NB.-     5{ popln - an initial population used as a starting popln. Default empty
+NB.-     6{ strategy - defines the binomial DE-strategy used in the optim procedure
+NB.-                 1 - Best1 (classical version of DE)
+NB.-                 2 - Rand1 (classical version of DE)
+NB.-                 3 - RandToBest1 (One of best versions)
+NB.-                 4 - Best2  (One of best versions)
+NB.-     7{ refresh - frequency of reports. Defaults to every 50 generations
+NB.-     8{ digits  - The number of digits to print when printing numeric 
+NB.-                  vals at each generation. Defaults to 4.
+NB.-     9{ reeval  - Boolean controlling whether the current best popln member
+NB.-                  is reevaluated each generation. Defaults to 0.
+NB.-                  Useful for stochastic evaluation functions.
 deoptim=: 3 : 0
   '' deoptim y
 :
