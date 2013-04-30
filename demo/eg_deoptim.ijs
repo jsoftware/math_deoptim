@@ -98,37 +98,35 @@ bin s1z;
 groupbox Output;
 bin vhv;
 cc lblIter static center;cn "Generations:";
-cc valIter static center;cn "0";
+cc valIter static center;
 bin zv;
 cc lblnEval static center;cn "Evaluations:";
-cc valnEval static center;cn "0";
+cc valnEval static center;
 bin zv;
 cc lblVal static center;cn "Cost-Value:";
-cc valVal static center;cn "0";
+cc valVal static center;
 bin zzs1v;
 cc lblMem static;cn "Best member:";
-cc valMem static;cn "0";
+cc valMem static;
 bin z;
 groupboxend;
 bin z;
 
 wh 247 256;cc deplot isigraph;
 set deplot stretch 1;
+pas 4 4;
 rem form end;
 )
 
 NB. ---------------------------------------------------------
 create=: 3 : 0
   wd EGDE
-  NB. initialize form here
   initControls''
-  wd 'pshow;pshow sw_hide'
   deplot=: conew 'jzplot'
-  PForm__deplot=: 'myplot'
   PFormhwnd__deplot=: wdqhwndp''
   PId__deplot=: 'deplot'
+  updateOutput''
   wd 'pshow;'
-  evtloop''
 )
 
 destroy=: 3 : 0
@@ -180,7 +178,7 @@ egde_deplot_paint=: 3 : 0
   pd__deplot 'color red;'
   pd__deplot _2 _1.2 _1.2 1.2 1.2 2; 2|.(4#LowLimit), _1 _1
   pd__deplot _1 _1 1 1 ; 1000 1 1 1000
-  if. 0 = 4!:0 <'result' do.
+  if. 0 ~: 'Generations' pget result do.
     pd__deplot 'color blue;'
     NB. plot__deplot _1.01 1.01;(": 'BestVars' pget result),' p. y'
     vls=. steps _1.4 1.4 100
@@ -192,7 +190,7 @@ egde_deplot_paint=: 3 : 0
 NB. ---------------------------------------------------------
 updateOutput=: 3 : 0
   if. 0~: 4!:0 <'result' do.
-    result=. (0;0;0;0);<''
+    result=: (;:'Generations nFEval BestVal BestVars'),.<0
   end.
   wd 'set valIter  text *', ": 'Generations' pget result
   wd 'set valnEval text *', ":      'nFEval' pget result
