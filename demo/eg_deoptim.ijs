@@ -112,7 +112,7 @@ bin z;
 groupboxend;
 bin z;
 
-wh 247 256;cc deplot isigraph;
+minwh 247 256;cc deplot isigraph;
 set deplot stretch 1;
 pas 4 4;
 rem form end;
