@@ -15,7 +15,7 @@ VERSION=: '1.0.19'
 
 RELEASE=: 'j802'
 
-PLATFORMS=: 'linux win darwin android'
+PLATFORMS=: ''
 
 FILES=: 0 : 0
 history.txt
