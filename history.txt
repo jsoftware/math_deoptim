@@ -1,5 +1,8 @@
 math/deoptim - change history
 
+== 1.0.19 ==
+ * chg: update for j802
+
 == 1.0.17/18 ==
  * fix: start up errors on Mac
  * chg: simplify initialisation of vars

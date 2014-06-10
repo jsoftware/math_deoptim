@@ -10,7 +10,7 @@ coinsert 'pdeoptim jgl2'
 steps=: {. + (1&{ - {.) * (i.@>: % ])@{:
 
 NB. =========================================================
-NB. Problem definition - Chebyshev polynomial fitting problem 
+NB. Problem definition - Chebyshev polynomial fitting problem
 
 NB. Coefficients for Chebychev polynomials
 T4=: 1 _8 8
@@ -59,7 +59,7 @@ optimize=: 3 : 0
 NB. =========================================================
 NB. Form Definition
 EGDE=: 0 : 0
-pc egde qtwd;pn "Differential Evolution Demo";
+pc egde;pn "Differential Evolution Demo";
 bin vh;
 cc cblFunc combolist;
 cc cblStrat combolist;
@@ -115,16 +115,13 @@ bin z;
 minwh 247 256;cc deplot isigraph;
 set deplot stretch 1;
 pas 4 4;
-rem form end;
 )
 
 NB. ---------------------------------------------------------
 create=: 3 : 0
   wd EGDE
   initControls''
-  deplot=: conew 'jzplot'
-  PFormhwnd__deplot=: wdqhwndp''
-  PId__deplot=: 'deplot'
+  deplot=: ('egde';'deplot') conew 'jzplot'
   updateOutput''
   wd 'pshow;'
 )
@@ -172,7 +169,7 @@ egde_slNP_changed=: 3 : 0
   wd 'set edNP text *',": 0".slNP
 )
 
-egde_deplot_paint=: 3 : 0
+egde_deplot_update=: 3 : 0
   pd__deplot 'reset'
   pd__deplot 'xrange _1.5 1.5;yrange _1 10;grids 0 0;'
   pd__deplot 'color red;'
@@ -180,11 +177,10 @@ egde_deplot_paint=: 3 : 0
   pd__deplot _1 _1 1 1 ; 1000 1 1 1000
   if. 0 ~: 'Generations' pget result do.
     pd__deplot 'color blue;'
-    NB. plot__deplot _1.01 1.01;(": 'BestVars' pget result),' p. y'
     vls=. steps _1.4 1.4 100
     pd__deplot vls;('BestVars' pget result) p. vls
   end.
-  pd__deplot 'show'
+  glpaint__deplot ''
 )
 
 NB. ---------------------------------------------------------
@@ -197,7 +193,7 @@ updateOutput=: 3 : 0
   wd 'set valVal   text *', ":     'BestVal' pget result
   wd 'set valMem   text *', ' 'joinstring '0.3' 8!:0 'BestVars' pget result
   wd 'msgs'
-  egde_deplot_paint''
+  egde_deplot_update''
 )
 
 initControls=: 3 : 0
