@@ -11,9 +11,9 @@ http://www.icsi.berkeley.edu/~storn/code.html
 Contributed by Ric Sherlock.
 )
 
-VERSION=: '1.0.24'
+VERSION=: '1.0.25'
 
-RELEASE=: 'j802 j803 j804 j805'
+RELEASE=: 'j802 j803 j804 j805 j806'
 
 PLATFORMS=: ''
 
